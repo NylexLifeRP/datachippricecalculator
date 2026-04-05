@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html dir="ltr">
+<head>
+    <title>Datachip Calculator</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background-color: #1e1e1e;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid #333;
+        }
+        h3 { 
+            border-bottom: 2px solid #333; 
+            padding-bottom: 10px; 
+            color: #00ffcc; 
+            text-align: center;
+            margin-top: 0;
+        }
+        p { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
+        input {
+            background: #2d2d2d;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 8px;
+            border-radius: 5px;
+            width: 80px;
+            text-align: center;
+            outline: none;
+        }
+        input:focus { border-color: #00ffcc; }
+        hr { border: 0; border-top: 1px dashed #444; margin: 20px 0; }
+        h2 { font-size: 1.2rem; margin: 5px 0; }
+        #finalProfit { font-size: 1.5rem; font-weight: bold; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Datachip Profit Calculator</h3>
+        
+        <p>Datachip Sell Price: <input type="text" id="datachipSellPrice" value="2500" oninput="updateTotal()"></p>
+        <p>Amount of Datachips: <input type="text" id="amount" value="1" oninput="updateTotal()"></p>
+        <br>
+        <p>Iron Price: <input type="text" id="ironPrice" value="500" oninput="updateTotal()"></p>
+        <p>Gold Price: <input type="text" id="goldPrice" value="600" oninput="updateTotal()"></p>
+        <p>Chemical Price: <input type="text" id="chemicalPrice" value="127" oninput="updateTotal()"></p>
+        <p>Glue Price: <input type="text" id="gluePrice" value="18" oninput="updateTotal()"></p>
+        <p>Tape Price: <input type="text" id="tapePrice" value="5" oninput="updateTotal()"></p>
+        <p>Scrap Metal Price: <input type="text" id="metalPrice" value="0" oninput="updateTotal()"></p>
+        
+        <hr>
+        <h2 id="totalSell">Total Sell: $0</h2>
+        <h2 id="totalSpend">Total Spend: $0</h2>
+        <h2 id="finalProfit">Total Profit: $0</h2>
+    </div>
+
+    <script>
+        function updateTotal() {
+            function getVal(id) {
+                return parseFloat(document.getElementById(id).value) || 0;
+            }
+            
+            const sellPrice = getVal('datachipSellPrice');
+            const qty = getVal('amount');
+            const iron = getVal('ironPrice');
+            const gold = getVal('goldPrice');
+            const chem = getVal('chemicalPrice');
+            const glue = getVal('gluePrice');
+            const tape = getVal('tapePrice');
+            const metal = getVal('metalPrice');
+
+            const totalSell = sellPrice * qty;
+            const costPerUnit = (iron * 2) + gold + chem + glue + tape + (metal * 6);
+            const totalSpend = costPerUnit * qty;
+            const totalProfit = totalSell - totalSpend;
+            
+            document.getElementById('totalSell').innerText = "Total Sell: $" + totalSell.toLocaleString();
+            document.getElementById('totalSpend').innerText = "Total Spend: $" + totalSpend.toLocaleString();
+            
+            const profitEl = document.getElementById('finalProfit');
+            profitEl.innerText = "Total Profit: $" + totalProfit.toLocaleString();
+            profitEl.style.color = totalProfit >= 0 ? "#00ff88" : "#ff4444";
+        }
+        updateTotal();
+    </script>
+</body>
+</html>
