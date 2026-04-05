@@ -48,7 +48,6 @@
             .pos { color: #00ff88; }
             .neg { color: #ff4444; }
     
-            /* מיקום הטקסט במרכז בתחתית */
             .footer-credit {
                 text-align: center;
                 margin-top: 40px;
@@ -136,9 +135,9 @@
             }
         
             function update() {
-                const v = id => parseFloat(document.getElementById(id).value) || 0;
-                const iron = v('p_i'), gold = v('p_g'), diam = v('p_d'), chem = v('p_c'), glue = v('p_gl'), tape = v('p_t'), metal = v('p_m');
-                const sn = v('s_n'), sg = v('s_g'), an = v('a_n'), ag = v('a_g');
+                const v = id, defaultValue => parseFloat(document.getElementById(id).value) || defaultValue;
+                const iron = v('p_i', 450), gold = v('p_g', 500), diam = v('p_d', 600), chem = v('p_c', 127), glue = v('p_gl', 18), tape = v('p_t', 5), metal = v('p_m', 0);
+                const sn = v('s_n', 2500), sg = v('s_g', 5000), an = v('a_n', 1), ag = v('a_g', 1);
         
                 const costN = (iron * 2) + gold + chem + glue + tape + (metal * 6);
                 const revN = sn * an, spendN = costN * an, profitN = revN - spendN;
