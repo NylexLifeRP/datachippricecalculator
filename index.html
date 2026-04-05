@@ -143,7 +143,7 @@
                 const costN = (iron * 2) + gold + chem + glue + tape + (metal * 6);
                 const revN = sn * an, spendN = costN * an, profitN = revN - spendN;
         
-                const costG = costN + diam + (iron * 2) + gold + (chem * 2) + (glue * 2) + (tape * 2) + (metal * 4);
+                const costG = costN + diam + (iron * 2) + gold + (chem + glue + tape) * 2 + (metal * 4);
                 const revG = sg * ag, spendG = costG * ag, profitG = revG - spendG;
         
                 document.getElementById('rev_n').innerText = formatNum(revN);
