@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr">
 <head>
-    <title>Datachip Calculator Pro</title>
+    <title>Datachip Calculator Grid</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
@@ -11,129 +11,106 @@
             margin: 0;
             padding: 20px;
         }
-        .main-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+        .grid-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
             gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
         }
         .container {
             background-color: #1e1e1e;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            width: 100%;
-            max-width: 400px;
             border: 1px solid #333;
         }
-        h3 { 
-            border-bottom: 2px solid #333; 
-            padding-bottom: 10px; 
-            color: #00ffcc; 
-            text-align: center;
-            margin-top: 0;
-        }
-        p { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
+        .prices-box { grid-row: span 4; }
+        h3 { border-bottom: 2px solid #333; padding-bottom: 10px; color: #00ffcc; text-align: center; margin-top: 0; }
+        .gold-title { color: #ffd700; border-color: #ffd700; }
+        p { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; font-size: 0.9rem; }
         input {
             background: #2d2d2d;
             border: 1px solid #444;
             color: #fff;
             padding: 8px;
             border-radius: 5px;
-            width: 80px;
+            width: 70px;
             text-align: center;
             outline: none;
         }
         input:focus { border-color: #00ffcc; }
-        hr { border: 0; border-top: 1px dashed #444; margin: 20px 0; }
-        .res-row { margin: 15px 0; }
-        .res-title { font-weight: bold; color: #bbb; display: block; margin-bottom: 5px; }
-        .res-value { font-size: 1.2rem; display: block; }
-        .profit-pos { color: #00ff88; }
-        .profit-neg { color: #ff4444; }
-        .gold-txt { color: #ffd700; }
+        hr { border: 0; border-top: 1px dashed #444; margin: 15px 0; }
+        .res-val { font-size: 1.2rem; font-weight: bold; display: block; margin-top: 5px; }
+        .pos { color: #00ff88; }
+        .neg { color: #ff4444; }
 
-        @media (max-width: 850px) {
-            .main-wrapper { flex-direction: column; align-items: center; }
+        @media (max-width: 600px) {
+            .grid-wrapper { display: flex; flex-direction: column; align-items: center; }
         }
     </style>
 </head>
 <body>
 
-<div class="main-wrapper">
-    <div class="container">
-        <h3>Material & Market Prices</h3>
-        <p>Normal Chip Sell: <input type="text" id="sell_norm" value="2500" oninput="update()"> </p>
-        <p>Gold Chip Sell: <input type="text" id="sell_gold" value="10000" oninput="update()"> </p>
+<div class="grid-wrapper">
+    <!-- 1: PRICES (Span Left Side) -->
+    <div class="container prices-box">
+        <h3>Prices</h3>
+        <p>Norm Sell: <input type="text" id="s_n" value="2500" oninput="update()"></p>
+        <p>Gold Sell: <input type="text" id="s_g" value="10000" oninput="update()"></p>
         <hr>
-        <p>Iron: <input type="text" id="p_iron" value="500" oninput="update()"> </p>
-        <p>Gold: <input type="text" id="p_gold" value="600" oninput="update()"> </p>
-        <p>Diamond: <input type="text" id="p_diamond" value="2000" oninput="update()"> </p>
-        <p>Chemical: <input type="text" id="p_chem" value="127" oninput="update()"> </p>
-        <p>Glue: <input type="text" id="p_glue" value="18" oninput="update()"> </p>
-        <p>Tape: <input type="text" id="p_tape" value="5" oninput="update()"> </p>
-        <p>Scrap Metal: <input type="text" id="p_metal" value="13" oninput="update()"> </p>
+        <p>Iron: <input type="text" id="p_i" value="500" oninput="update()"></p>
+        <p>Gold: <input type="text" id="p_g" value="600" oninput="update()"></p>
+        <p>Diamond: <input type="text" id="p_d" value="2000" oninput="update()"></p>
+        <p>Chemical: <input type="text" id="p_c" value="127" oninput="update()"></p>
+        <p>Glue: <input type="text" id="p_gl" value="18" oninput="update()"></p>
+        <p>Tape: <input type="text" id="p_t" value="5" oninput="update()"></p>
+        <p>Scrap: <input type="text" id="p_m" value="13" oninput="update()"></p>
     </div>
 
+    <!-- 2: NORMAL CHIP (Top Right) -->
     <div class="container">
-        <h3>Profit Results</h3>
-        <p>Amount of Chips: <input type="text" id="amount" value="1" oninput="update()"> </p>
+        <h3>Normal Chip</h3>
+        <p>Amount: <input type="text" id="a_n" value="1" oninput="update()"></p>
         <hr>
-        
-        <div class="res-row">
-            <span class="res-title">Normal Datachip Profit:</span>
-            <span id="res_norm" class="res-value">$0</span>
-        </div>
+        <span>Profit:</span>
+        <span id="res_n" class="res-val">$0</span>
+        <p style="color:#888; font-size:0.8rem;">Spend: <span id="sp_n">$0</span></p>
+    </div>
 
-        <div class="res-row">
-            <span class="res-title gold-txt">Gold Datachip Profit:</span>
-            <span id="res_gold" class="res-value">$0</span>
-        </div>
-        
+    <!-- 3: GOLD CHIP (Bottom Right) -->
+    <div class="container">
+        <h3 class="gold-title">Gold Chip</h3>
+        <p>Amount: <input type="text" id="a_g" value="1" oninput="update()"></p>
         <hr>
-        <div class="res-row">
-            <span class="res-title">Total Spend (Normal):</span>
-            <span id="spend_norm" class="res-value">$0</span>
-        </div>
-        <div class="res-row">
-            <span class="res-title gold-txt">Total Spend (Gold):</span>
-            <span id="spend_gold" class="res-value">$0</span>
-        </div>
+        <span>Profit:</span>
+        <span id="res_g" class="res-val">$0</span>
+        <p style="color:#888; font-size:0.8rem;">Spend: <span id="sp_g">$0</span></p>
     </div>
 </div>
 
 <script>
     function update() {
-        const getV = id => parseFloat(document.getElementById(id).value) || 0;
+        const v = id => parseFloat(document.getElementById(id).value) || 0;
         
-        const qty = getV('amount');
-        const iron = getV('p_iron');
-        const gold = getV('p_gold');
-        const diam = getV('p_diamond');
-        const chem = getV('p_chem');
-        const glue = getV('p_glue');
-        const tape = getV('p_tape');
-        const metal = getV('p_metal');
-        
-        const s_norm = getV('sell_norm');
-        const s_gold = getV('sell_gold');
+        const iron = v('p_i'), gold = v('p_g'), diam = v('p_d'), chem = v('p_c'), glue = v('p_gl'), tape = v('p_t'), metal = v('p_m');
+        const sn = v('s_n'), sg = v('s_g');
+        const an = v('a_n'), ag = v('a_g');
 
-        const cost_norm = (iron * 2) + gold + chem + glue + tape + (metal * 6);
-        const profit_norm = (s_norm - cost_norm) * qty;
+        const costN = (iron * 2) + gold + chem + glue + tape + (metal * 6);
+        const profitN = (sn - costN) * an;
 
-        const cost_gold = cost_norm + diam + (iron * 2) + gold + (chem * 2) + (glue * 2) + (tape * 2) + (metal * 4);
-        const profit_gold = (s_gold - cost_gold) * qty;
+        const costG = costN + diam + (iron * 2) + gold + (chem * 2) + (glue * 2) + (tape * 2) + (metal * 4);
+        const profitG = (sg - costG) * ag;
 
-        const setUI = (id, val, isProfit = false) => {
-            const el = document.getElementById(id);
-            el.innerText = "$" + Math.floor(val).toLocaleString();
-            if(isProfit) el.className = val >= 0 ? "res-value profit-pos" : "res-value profit-neg";
-        };
+        document.getElementById('res_n').innerText = "$" + Math.floor(profitN).toLocaleString();
+        document.getElementById('res_n').className = "res-val " + (profitN >= 0 ? "pos" : "neg");
+        document.getElementById('sp_n').innerText = "$" + Math.floor(costN * an).toLocaleString();
 
-        setUI('res_norm', profit_norm, true);
-        setUI('res_gold', profit_gold, true);
-        setUI('spend_norm', cost_norm * qty);
-        setUI('spend_gold', cost_gold * qty);
+        document.getElementById('res_g').innerText = "$" + Math.floor(profitG).toLocaleString();
+        document.getElementById('res_g').className = "res-val " + (profitG >= 0 ? "pos" : "neg");
+        document.getElementById('sp_g').innerText = "$" + Math.floor(costG * ag).toLocaleString();
     }
     update();
 </script>
