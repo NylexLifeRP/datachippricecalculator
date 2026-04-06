@@ -153,7 +153,7 @@
             return sign + "$" + num.toFixed(2) + units[unitIdx];
         }
 
-        function setTooltip(el, lines) {
+        function setTooltip(el, lines, amount, type) {
             el.addEventListener('mouseenter', e => {
                 tooltip.innerText = lines.map(([amt, name, price]) =>
                     `${amt}x ${name} - $${price.toLocaleString(undefined, {maximumFractionDigits:2})}`
@@ -166,7 +166,8 @@
             el.addEventListener('mouseleave', () => tooltip.style.opacity = 0);
 
             el.addEventListener('click', () => {
-                const text = lines.map(([amt, name]) => `${amt}x ${name} Requirements:`).join("\n");
+                const text = lines.map(([amt, name]) => `${amt}x ${name}`).join("\n");
+                text = `${amount}x ${type}:\n` + text;
                 navigator.clipboard.writeText(text);
             });
         }
@@ -199,7 +200,7 @@
                 [1*an,"Metal Sheet", formatNum(1*an)],
                 [4*an,"Metal Bar", formatNum(4*an)],
                 [2*an,"Scrap Metal", formatNum(2*an)]
-            ]);
+            ], an, "Datachip");
 
             document.getElementById('res_n').innerText = formatNum(profitN);
             document.getElementById('res_n').className =
@@ -210,14 +211,14 @@
             const spGEl = document.getElementById('sp_g');
             spGEl.innerText = formatNum(spendG);
             setTooltip(spGEl, [
-                [1*ag,"Datachip", formatNum(costN*ag)],
-                [1*ag,"Diamond", formatNum(diam*ag)],
                 [2*ag,"Iron", formatNum(iron*2*ag)],
                 [1*ag,"Gold", formatNum(gold*ag)],
+                [1*ag,"Diamond", formatNum(diam*ag)],
+                [1*ag,"Datachip", formatNum(costN*ag)],
                 [1*ag,"Soot Rubber", formatNum((chem+glue+tape)*2*ag)],
-                [1*an,"Metal Sheet", formatNum(1*an)],
-                [2*an,"Scrap Metal", formatNum(2*an)]
-            ]);
+                [1*ag,"Metal Sheet", formatNum(1*ag)],
+                [2*ag,"Scrap Metal", formatNum(2*ag)]
+            ], ag, "Gold Datachip");
 
             document.getElementById('res_g').innerText = formatNum(profitG);
             document.getElementById('res_g').className =
