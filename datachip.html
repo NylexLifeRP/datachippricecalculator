@@ -135,7 +135,10 @@
             }
         
             function update() {
-                const v = (id, defaultValue) => parseFloat(document.getElementById(id).value) || defaultValue;
+                const v = (id, defaultValue) => {
+                    const val = parseFloat(document.getElementById(id).value);
+                    return isNaN(val) ? defaultValue : val;
+                };
                 
                 const iron = v('p_i', 450), gold = v('p_g', 500), diam = v('p_d', 600), 
                       chem = v('p_c', 127), glue = v('p_gl', 18), tape = v('p_t', 5), metal = v('p_m', 0);
