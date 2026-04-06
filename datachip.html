@@ -48,6 +48,7 @@
         .profit-val { font-size: 1.4rem; }
         .pos { color: #00ff88; }
         .neg { color: #ff4444; }
+        .stat-val[style*="cursor: pointer"] { cursor: pointer; }
 
         .tooltip {
             position: absolute;
@@ -163,6 +164,13 @@
                 tooltip.style.opacity = 1;
             });
             el.addEventListener('mouseleave', () => tooltip.style.opacity = 0);
+
+            el.addEventListener('click', () => {
+                const text = lines.map(([amt, name]) => `${amt}x ${name} Requirements:`).join("\n");
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Requirements copied to clipboard!');
+                });
+            });
         }
 
         function update() {
@@ -187,12 +195,12 @@
             const spNEl = document.getElementById('sp_n');
             spNEl.innerText = formatNum(spendN);
             setTooltip(spNEl, [
-                [2*an,"Iron", iron*2*an],
-                [1*an,"Gold", gold*an],
-                [1*an,"Soot Rubber", (chem+glue+tape)*an],
-                [1*an,"Metal Sheet", 1*an],
-                [4*an,"Metal Bar", 4*an],
-                [2*an,"Scrap Metal", 2*an]
+                [2*an,"Iron", formatNum(iron*2*an)],
+                [1*an,"Gold", formatNum(gold*an)],
+                [1*an,"Soot Rubber", formatNum((chem+glue+tape)*an)],
+                [1*an,"Metal Sheet", formatNum(1*an)],
+                [4*an,"Metal Bar", formatNum(4*an)],
+                [2*an,"Scrap Metal", formatNum(2*an)]
             ]);
 
             document.getElementById('res_n').innerText = formatNum(profitN);
@@ -204,12 +212,13 @@
             const spGEl = document.getElementById('sp_g');
             spGEl.innerText = formatNum(spendG);
             setTooltip(spGEl, [
-                [1*ag,"Datachip", costN*ag],
-                [1*ag,"Diamond", diam*ag],
-                [2*ag,"Iron", iron*2*ag],
-                [1*ag,"Gold", gold*ag],
-                [1*ag,"Soot Rubber", (chem+glue+tape)*2*ag],
-                [4*ag,"Scrap Metal", metal*4*ag]
+                [1*ag,"Datachip", formatNum(costN*ag)],
+                [1*ag,"Diamond", formatNum(diam*ag)],
+                [2*ag,"Iron", formatNum(iron*2*ag)],
+                [1*ag,"Gold", formatNum(gold*ag)],
+                [1*ag,"Soot Rubber", formatNum((chem+glue+tape)*2*ag)],
+                [1*an,"Metal Sheet", formatNum(1*an)],
+                [2*an,"Scrap Metal", formatNum(2*an)]
             ]);
 
             document.getElementById('res_g').innerText = formatNum(profitG);
