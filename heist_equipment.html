@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html dir="ltr">
+<head>
+    <title>Heist Gear Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .grid-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .container {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+        h3 { border-bottom: 2px solid #333; padding-bottom: 10px; color: #ff4444; text-align: center; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
+        .gold-title { color: #ffd700; border-color: #ffd700; }
+        .blue-title { color: #00d2ff; border-color: #00d2ff; }
+        
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 12px 0;
+            font-size: 0.95rem;
+        }
+        
+        input {
+            background: #2d2d2d;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 8px;
+            border-radius: 5px;
+            width: 90px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: #ff4444; }
+        .qty-input { border-color: #555; width: 60px; color: #00ffcc; }
+
+        hr { border: 0; border-top: 1px dashed #444; margin: 20px 0; }
+        
+        .total-box {
+            text-align: center;
+            padding: 15px;
+            background: #252525;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+        .total-label { color: #aaa; font-size: 0.9rem; margin-bottom: 5px; display: block;}
+        .total-val { font-size: 2rem; font-weight: bold; color: #00ff88; text-shadow: 0 0 10px rgba(0,255,136,0.2); }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 1fr 100px 80px;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .header-row { font-weight: bold; color: #888; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px;}
+
+        .footer-credit {
+            text-align: center;
+            margin-top: 40px;
+            padding-bottom: 20px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        @media (max-width: 850px) {
+            .grid-wrapper { display: flex; flex-direction: column; }
+        }
+    </style>
+</head>
+<body>  
+    <div class="grid-wrapper">
+        <div class="container">
+            <h3>Unit Prices ($)</h3>
+            <div class="input-group"><span>Drill:</span><input type="number" id="p_drill" value="30000" oninput="update()"></div>
+            <div class="input-group"><span>Drill Monitor:</span><input type="number" id="p_monitor" value="10000" oninput="update()"></div>
+            <div class="input-group"><span>Millsaw:</span><input type="number" id="p_saw" value="40000" oninput="update()"></div>
+            <div class="input-group"><span>Electric Belt:</span><input type="number" id="p_belt" value="5000" oninput="update()"></div>
+            <hr>
+            <div class="input-group"><span>Gold Bit:</span><input type="number" id="p_bit_g" value="12500" oninput="update()"></div>
+            <div class="input-group"><span>Reinforced Bit:</span><input type="number" id="p_bit_r" value="7500" oninput="update()"></div>
+            <div class="input-group"><span>Metal Bit:</span><input type="number" id="p_bit_m" value="5000" oninput="update()"></div>
+            <hr>
+            <div class="input-group"><span>Gold Core:</span><input type="number" id="p_core_g" value="10000" oninput="update()"></div>
+            <div class="input-group"><span>Iron Core:</span><input type="number" id="p_core_i" value="5000" oninput="update()"></div>
+            <div class="input-group"><span>Metal Core:</span><input type="number" id="p_core_m" value="3000" oninput="update()"></div>
+        </div>
+    
+        <div class="container">
+            <h3 class="blue-title">Order Calculator</h3>
+            
+            <div class="item-row header-row">
+                <span>Item Name</span>
+                <span style="text-align: center;">Price</span>
+                <span style="text-align: center;">Quantity</span>
+            </div>
+
+            <div class="item-row"><span>Drill</span><span id="dp_drill" style="text-align:center">$0</span><input type="number" id="q_drill" class="qty-input" value="0" oninput="update()"></div>
+            <div class="item-row"><span>Monitor</span><span id="dp_monitor" style="text-align:center">$0</span><input type="number" id="q_monitor" class="qty-input" value="0" oninput="update()"></div>
+            <div class="item-row"><span>Millsaw</span><span id="dp_saw" style="text-align:center">$0</span><input type="number" id="q_saw" class="qty-input" value="0" oninput="update()"></div>
+            <div class="item-row"><span>Belt</span><span id="dp_belt" style="text-align:center">$0</span><input type="number" id="q_belt" class="qty-input" value="0" oninput="update()"></div>
+            <div class="item-row"><span>Gold Bit</span><span id="dp_bit_g" style="text-align:center">$0</span><input type="number" id="q_bit_g" class="qty-input" value="0" oninput="update()"></div>
+            <div class="item-row"><span>Reinf. Bit</span><span id="dp_bit_r" style="text-align:center">$0</span><input type="number" id="q_bit_r" class="qty-input" value="0" oninput="update()"></div>
+            <div class="item-row"><span>Metal Bit</span><span id="dp_bit_m" style="text-align:center">$0</span><input type="number" id="q_bit_m" class="qty-input" value="0" oninput="update()"></div>
+            <div class="item-row"><span>Gold Core</span><span id="dp_core_g" style="text-align:center">$0</span><input type="number" id="q_core_g" class="qty-input" value="0" oninput="update()"></div>
+            <div class="item-row"><span>Iron Core</span><span id="dp_core_i" style="text-align:center">$0</span><input type="number" id="q_core_i" class="qty-input" value="0" oninput="update()"></div>
+            <div class="item-row"><span>Metal Core</span><span id="dp_core_m" style="text-align:center">$0</span><input type="number" id="q_core_m" class="qty-input" value="0" oninput="update()"></div>
+
+            <hr>
+            
+            <div class="total-box">
+                <span class="total-label">TOTAL ORDER COST</span>
+                <span id="total_cost" class="total-val">$0</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-credit">
+        Heist Ops Management System &copy; 2026 ninioteam.dev
+    </div>
+    
+    <script>
+        // Load saved prices from Local Storage on startup
+        window.onload = function() {
+            const savedPrices = JSON.parse(localStorage.getItem('heistPrices'));
+            if (savedPrices) {
+                for (const [id, val] of Object.entries(savedPrices)) {
+                    if(document.getElementById(id)) document.getElementById(id).value = val;
+                }
+            }
+            update();
+        };
+
+        function formatNum(num) {
+            return "$" + num.toLocaleString();
+        }
+    
+        function update() {
+            const v = (id) => parseFloat(document.getElementById(id).value) || 0;
+            
+            // Get Prices
+            const prices = {
+                p_drill: v('p_drill'), p_monitor: v('p_monitor'),
+                p_saw: v('p_saw'), p_belt: v('p_belt'),
+                p_bit_g: v('p_bit_g'), p_bit_r: v('p_bit_r'), p_bit_m: v('p_bit_m'),
+                p_core_g: v('p_core_g'), p_core_i: v('p_core_i'), p_core_m: v('p_core_m')
+            };
+
+            // Save prices to Local Storage
+            localStorage.setItem('heistPrices', JSON.stringify(prices));
+
+            // Sync Display Prices in Order Form
+            document.getElementById('dp_drill').innerText = formatNum(prices.p_drill);
+            document.getElementById('dp_monitor').innerText = formatNum(prices.p_monitor);
+            document.getElementById('dp_saw').innerText = formatNum(prices.p_saw);
+            document.getElementById('dp_belt').innerText = formatNum(prices.p_belt);
+            document.getElementById('dp_bit_g').innerText = formatNum(prices.p_bit_g);
+            document.getElementById('dp_bit_r').innerText = formatNum(prices.p_bit_r);
+            document.getElementById('dp_bit_m').innerText = formatNum(prices.p_bit_m);
+            document.getElementById('dp_core_g').innerText = formatNum(prices.p_core_g);
+            document.getElementById('dp_core_i').innerText = formatNum(prices.p_core_i);
+            document.getElementById('dp_core_m').innerText = formatNum(prices.p_core_m);
+
+            // Calculate Total
+            const total = 
+                (prices.p_drill * v('q_drill')) + 
+                (prices.p_monitor * v('q_monitor')) +
+                (prices.p_saw * v('q_saw')) + 
+                (prices.p_belt * v('q_belt')) +
+                (prices.p_bit_g * v('q_bit_g')) + 
+                (prices.p_bit_r * v('q_bit_r')) + 
+                (prices.p_bit_m * v('q_bit_m')) +
+                (prices.p_core_g * v('q_core_g')) + 
+                (prices.p_core_i * v('q_core_i')) + 
+                (prices.p_core_m * v('q_core_m'));
+    
+            document.getElementById('total_cost').innerText = formatNum(total);
+        }
+    </script>
+</body>
+</html>
