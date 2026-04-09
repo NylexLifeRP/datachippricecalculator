@@ -4,7 +4,6 @@
     <title>Heist Gear Calculator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* Removes arrows from number inputs */
         /* Chrome, Safari, Edge, Opera */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -17,7 +16,6 @@
           -moz-appearance: textfield;
         }
         
-        /* Forced Dark Theme */
         :root {
             --accent-red: #ff4444;
             --accent-blue: #00d2ff;
@@ -43,7 +41,6 @@
             max-height: 100vh;
         }
 
-        /* NEW: Wrapper for side-by-side layout */
         .main-wrapper {
             display: flex;
             flex-direction: column;
@@ -189,7 +186,6 @@
         .hidden { display: none; }
         .footer-credit { text-align: center; margin-top: auto; color: #333; font-size: 0.8rem; }
 
-        /* DESKTOP STYLES (Screen wider than 900px) */
         @media (min-width: 900px) {
             .main-wrapper {
                 flex-direction: row;
@@ -228,6 +224,7 @@
                     <div class="item-row"><span class="item-name">Drill Monitor</span><span id="dp_monitor" class="item-price-label">$0</span><input type="number" id="q_monitor" class="qty-input" value="0" oninput="update()"></div>
                     <div class="item-row"><span class="item-name">Millsaw</span><span id="dp_saw" class="item-price-label">$0</span><input type="number" id="q_saw" class="qty-input" value="0" oninput="update()"></div>
                     <div class="item-row"><span class="item-name">Belt</span><span id="dp_belt" class="item-price-label">$0</span><input type="number" id="q_belt" class="qty-input" value="0" oninput="update()"></div>
+                    <div class="item-row"><span class="item-name">Jewlery Hammer</span><span id="jewl_hammer" class="item-price-label">$0</span><input type="number" id="q_hammer" class="qty-input" value="0" oninput="update()"></div>
                 </div>
             </details>
 
@@ -271,6 +268,7 @@
                     <div class="item-row"><span class="item-name">Drill Monitor</span><span></span><input type="number" id="p_monitor" class="price-input" value="10000" oninput="update()"></div>
                     <div class="item-row"><span class="item-name">Millsaw</span><span></span><input type="number" id="p_saw" class="price-input" value="40000" oninput="update()"></div>
                     <div class="item-row"><span class="item-name">Belt</span><span></span><input type="number" id="p_belt" class="price-input" value="5000" oninput="update()"></div>
+                    <div class="item-row"><span class="item-name">Jewlery Hammer</span><span></span><input type="number" id="p_hammer" class="price-input" value="12500" oninput="update()"></div>
                 </div>
             </details>
 
@@ -298,7 +296,6 @@
     
     <script>
         function showView(view) {
-            // Only toggle classes if we are on a small screen
             if (window.innerWidth < 900) {
                 document.getElementById('view-calc').classList.toggle('hidden', view !== 'calc');
                 document.getElementById('view-price').classList.toggle('hidden', view !== 'price');
@@ -322,7 +319,7 @@
         function update() {
             const v = (id) => parseFloat(document.getElementById(id).value) || 0;
             const prices = {
-                p_drill: v('p_drill'), p_monitor: v('p_monitor'), p_saw: v('p_saw'), p_belt: v('p_belt'),
+                p_drill: v('p_drill'), p_monitor: v('p_monitor'), p_saw: v('p_saw'), p_belt: v('p_belt'), p_hammer: v('p_hammer'),
                 p_bit_g: v('p_bit_g'), p_bit_r: v('p_bit_r'), p_bit_m: v('p_bit_m'),
                 p_core_g: v('p_core_g'), p_core_i: v('p_core_i'), p_core_m: v('p_core_m')
             };
@@ -330,7 +327,7 @@
             localStorage.setItem('heistPrices', JSON.stringify(prices));
 
             const displayMap = {
-                'dp_drill': prices.p_drill, 'dp_monitor': prices.p_monitor, 'dp_saw': prices.p_saw, 'dp_belt': prices.p_belt,
+                'dp_drill': prices.p_drill, 'dp_monitor': prices.p_monitor, 'dp_saw': prices.p_saw, 'dp_belt': prices.p_belt, 'dp_hammer': prices.p_hammer,
                 'dp_bit_g': prices.p_bit_g, 'dp_bit_r': prices.p_bit_r, 'dp_bit_m': prices.p_bit_m,
                 'dp_core_g': prices.p_core_g, 'dp_core_i': prices.p_core_i, 'dp_core_m': prices.p_core_m
             };
@@ -341,7 +338,7 @@
 
             const total = 
                 (prices.p_drill * v('q_drill')) + (prices.p_monitor * v('q_monitor')) +
-                (prices.p_saw * v('q_saw')) + (prices.p_belt * v('q_belt')) +
+                (prices.p_saw * v('q_saw')) + (prices.p_belt * v('q_belt')) + (prices.p_hammer * v('q_hammer')) +
                 (prices.p_bit_g * v('q_bit_g')) + (prices.p_bit_r * v('q_bit_r')) + (prices.p_bit_m * v('q_bit_m')) +
                 (prices.p_core_g * v('q_core_g')) + (prices.p_core_i * v('q_core_i')) + (prices.p_core_m * v('q_core_m'));
     
